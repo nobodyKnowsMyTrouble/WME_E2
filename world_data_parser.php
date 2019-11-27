@@ -11,15 +11,16 @@ class WorldDataParser {
             //  array fgetcsv(resource $handle, integer $length, string $delimiter)
       while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
         if($row == 1){
-          $head = $data;
+          $this->head = $data;
         } else {
-          $table[] = array_combine($head, $data);
+          $this->table[] = array_combine($this->head, $data);
         }
         $row++;
       }
       fclose($handle);
       ini_set('auto_detect_line_endings', FALSE);
-      return $table;
+//
+      return $this->table;
     }
   }
 
