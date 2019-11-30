@@ -47,7 +47,7 @@ class WorldDataParser {
                           createElement('Country'));
           foreach($tabrow as $key => $val) {
             $country -> appendChild($xmlDoc ->
-                          createElement(str_replace(' ', '_', $key), $val));
+                          createElement(str_replace(' ', '_', trim($key)), trim($val)));
           }
         }
       }
@@ -58,10 +58,13 @@ class WorldDataParser {
 
       // Save xml file
       $file_name = 'world_data.xml';
-
-      if(!$xmlDoc -> save($file_name)){
+		$bool = $xmlDoc -> save($file_name);
+		echo $bool;
+      if($bool > 0){
+		echo "TRUE";
         return TRUE;
       }
+	  echo "false";
       return FALSE;
     } catch (ErrorException $e){
       echo '<br />Exception abgefangen: ',  $e->getMessage(), "\n"; //TODO: Entfernen
