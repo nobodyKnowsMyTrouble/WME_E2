@@ -24,10 +24,51 @@ class WorldDataParser {
     }
   }
 
-  function saveXML(){
-    echo "<p>Bitte mit ";
-    echo $this->benoetigter_kraftstoff;
-    echo " betanken";
+
+
+  function saveXML(array $data){
+    set_error_handler(function($errno, $errstr, $errfile, $errline, $errcontext) {
+        // error was suppressed with the @-operator
+        if (0 === error_reporting()) {
+            return false;
+        }
+        throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
+    });
+    try{                            //TODO: implement
+      // Create the xml document
+      $xmlDoc = new DOMDocument();
+
+      $root = $xmlDoc -> appendChild($xmlDoc ->
+                          createElement("Countries"));
+
+      foreach($data as $tabrow) {
+        if (!empty($tabrow)) {
+          $country = $root -> appendChild($xmlDoc ->
+                          createElement('Country'));
+          foreach($tabrow as $key => $val) {
+            $country -> appendChild($xmlDoc ->
+                          createElement(str_replace(' ', '_', $key), $val));
+          }
+        }
+      }
+      header("Content-Type: text/plain");
+
+      // Make the output
+      $xmlDoc -> formatOutput = true;
+
+      // Save xml file
+      $file_name = 'world_data.xml';
+
+      if(!$xmlDoc -> save($file_name)){
+        return TRUE;
+      }
+      return FALSE;
+    } catch (ErrorException $e){
+      echo '<br />Exception abgefangen: ',  $e->getMessage(), "\n"; //TODO: Entfernen
+      return FALSE;
+    } finally {
+      restore_error_handler();
+    }
   }
 
   function printXML(){
