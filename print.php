@@ -9,6 +9,7 @@ $parsed = $my_wdp->parseCSV("test.csv");
 $bool = $my_wdp->saveXML($parsed);
 if ($bool){
   $tbody = $my_wdp->printXML("world_data.xml", "style.xsl");
+  echo $tbody;
   $dom = new DOMDocument('1.0', 'UTF-8');
   libxml_use_internal_errors(true);
   $dom -> loadHTMLFile("./index.html");
@@ -17,8 +18,8 @@ if ($bool){
   $tbody_fragment -> appendXml($tbody);
   $table = $dom->getElementsByTagName('table')[0];
   $old_tbody = $dom -> getElementById("table_body");
-  $table->replaceChild( $tbody_fragment, $old_tbody);
-  print($dom->saveHTML());
+  $table->appendChild($tbody_fragment);
+  #print($dom->saveHTML());
 }
 
 ?>
