@@ -34,9 +34,9 @@ class WorldDataParser {
         }
         throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
     });
-    try{                            //TODO: implement
+    try{
       // Create the xml document
-      $xmlDoc = new DOMDocument();
+      $xmlDoc = new DOMDocument('1.0', 'utf-8');
 
       $root = $xmlDoc -> appendChild($xmlDoc ->
                           createElement("Countries"));
@@ -51,45 +51,33 @@ class WorldDataParser {
           }
         }
       }
-      header("Content-Type: text/plain");
+      //header("Content-Type: text/plain");
 
       // Make the output
       $xmlDoc -> formatOutput = true;
 
       // Save xml file
       $file_name = 'world_data.xml';
-		$bool = $xmlDoc -> save($file_name);
-		echo $bool;
+      $bool = $xmlDoc -> save($file_name);
       if($bool > 0){
-		echo "TRUE";
         return TRUE;
       }
-	  echo "false";
       return FALSE;
     } catch (ErrorException $e){
-      echo '<br />Exception abgefangen: ',  $e->getMessage(), "\n"; //TODO: Entfernen
       return FALSE;
     } finally {
       restore_error_handler();
     }
   }
 
-  function printXML(){
-    echo "<p>Bitte mit ";
-    echo $this->benoetigter_kraftstoff;
-    echo " betanken";
+  function printXML(string $xmlPath, string $xslPath){
+    $xml = new DOMDocument;
+    $xml->load($xmlPath);
+    $xsl = new DOMDocument;
+    $xsl->load($xslPath);
+    $proc = new XSLTProcessor;
+    $proc -> importStylesheet($xsl);
+    return $proc->transformToXML($xml);
   }
 }
-// bisher passiert noch gar nichts,
-// jetzt wird aus der Klasse ein Objekt erzeugt
-// $auto_1 = new auto;
-
-// dem Auto wird nun der Kraftstoff zugewiesen,
-// eine Eigenschaft (Attribut) wird definiert
-//$auto_1->benoetigter_kraftstoff = "Diesel";
-
-// und nun wird das erste mal die Methode (Funktion)
-// tankdeckel_oeffnen aufgerufen und das Auto sagt
-// freudig, was es für Sprit benötigt
-// $auto_1->tankdeckel_oeffnen();
 ?>

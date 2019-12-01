@@ -1,7 +1,7 @@
 <?php
 // parse.php
 // print parseCSV
-require('./world_data_parser.php');
+require_once('./world_data_parser.php');
 $my_wdp = new WorldDataParser;
 $table = $my_wdp->parseCSV("test.csv");
 $head = $my_wdp->head;
