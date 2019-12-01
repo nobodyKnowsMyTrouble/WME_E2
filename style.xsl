@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:template match="/">
-  <table>
     <tr bgcolor="#9acd32">
       <th>ID</th>
       <th>Country</th>
@@ -36,6 +35,5 @@
       <td><xsl:value-of select="gps_long"/></td>
     </tr>
     </xsl:for-each>
-  </table>
 </xsl:template>
 </xsl:stylesheet>
